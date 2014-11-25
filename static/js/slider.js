@@ -133,6 +133,10 @@
       timeout;
 
     $(document).on({
+      // for firefox
+      DOMMouseScroll: function(e) {
+        self.scroll(e.originalEvent.detail > 0 ? 1 : -1);
+      },
       mousewheel: function(e) {
         self.scroll(e.originalEvent.wheelDelta < 0 ? 1 : -1);
       },
