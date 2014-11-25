@@ -1,0 +1,344 @@
+/**
+ * @description 首页
+ * @author liwenfu
+ * @time 2014-11-25 11:11
+ */
+/* Reset
+  ------------------------- */
+
+html, body {
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+ul, ol, p, h1, h2, h3, h4, h5, h6, dl, dt, dd, form, textarea, input {
+  margin: 0;
+}
+ul, ol {
+  list-style: none;
+}
+ul, ol, input {
+  padding: 0;
+}
+table {
+  margin: 0 auto;
+  width: 100%;
+  border-collapse: collapse;
+}
+a img {
+  border: 0;
+}
+/* Common
+  ------------------------- */
+
+body {
+  font: normal normal normal 13px/20px '微软雅黑';
+  background: #47a3dd;
+}
+#paginator {
+  top: 50%;
+  bottom: 50%;
+  right: 30px;
+  position: absolute;
+  z-index: 2;
+}
+#paginator i {
+  display: block;
+  width: 12px;
+  height: 12px;
+  background: url(../images/paginator.png);
+}
+#paginator .active {
+  background-position: center bottom;
+}
+#container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+.slide {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.slide-wrap {
+  width: 100%;
+  height: 100%;
+  padding: 1px;
+  overflow: hidden;
+  /*display: table-cell;*/
+  /*vertical-align: middle;*/
+}
+.content-wrap {
+  width: 1002px;
+  margin: auto;
+  position: relative;
+  top: 50%;
+}
+.slide-1 {
+  background: #47a3dd;
+}
+.slide-2 {
+  background: #62c6bf;
+}
+.slide-3 {
+  background: #fabf59;
+}
+.slide-4 {
+  background: #8bc867;
+}
+.slide-5 {
+  background: #f18a61;
+}
+.slide-6 {
+  background: #918ac0;
+}
+/* Slide - 1
+  ------------------------- */
+
+.slide-1 .content-wrap {
+  margin-top: -388px;
+}
+.logo {
+  background: url(../images/1/logo.png) no-repeat;
+  margin-bottom: 30px;
+  padding-left: 110px;
+  height: 90px;
+  line-height: 90px;
+  color: white;
+  font-size: 28px;
+}
+.pic-wrap {
+  height: 414px;
+  position: relative;
+  background: #93d7f1;
+  border-radius: 5px;
+}
+.pic-1, .pic-2, .pic-3, .pic-4, .pic-5, .pic-6, .pic-7, .pic-8 {
+  position: absolute;
+  background-repeat: no-repeat;
+}
+.pic-1 {
+  background-image: url(../images/1/pic/1.jpg);
+  width: 293px;
+  height: 384px;
+  left: 15px;
+  top: 15px;
+}
+.pic-2 {
+  background-image: url(../images/1/pic/2.jpg);
+  width: 192px;
+  height: 150px;
+  left: 323px;
+  top: 15px;
+}
+.pic-3 {
+  background-image: url(../images/1/pic/3.jpg);
+  width: 192px;
+  height: 220px;
+  left: 323px;
+  top: 179px;
+}
+.pic-4 {
+  background-image: url(../images/1/pic/4.jpg);
+  width: 458px;
+  height: 150px;
+  left: 529px;
+  top: 15px;
+}
+.pic-5 {
+  background-image: url(../images/1/pic/5.jpg);
+  width: 285px;
+  height: 94px;
+  left: 528px;
+  top: 179px;
+}
+.pic-6 {
+  background-image: url(../images/1/pic/6.jpg);
+  width: 85px;
+  height: 112px;
+  left: 529px;
+  top: 287px;
+}
+.pic-7 {
+  background-image: url(../images/1/pic/7.jpg);
+  width: 186px;
+  height: 113px;
+  left: 628px;
+  top: 286px;
+}
+.pic-8 {
+  background-image: url(../images/1/pic/8.jpg);
+  width: 159px;
+  height: 220px;
+  left: 828px;
+  top: 179px;
+}
+.slide-1 .text {
+  background: url(../images/1/text.png) no-repeat center center;
+  margin: 50px 0;
+  height: 51px;
+}
+.slide-1 .download {
+  display: block;
+  background: url(../images/1/download.png);
+  width: 208px;
+  height: 78px;
+  margin: 50px auto;
+}
+/* Slide - 2
+  ------------------------- */
+
+.slide-2 .content-wrap {
+  margin-top: -335px;
+}
+.slide-2 .text {
+  float: left;
+  margin-top: 300px;
+  margin-left: 95px;
+  width: 356px;
+  height: 165px;
+  background-image: url(../images/2/text.png);
+}
+.slide-2 .mobile {
+  float: right;
+  margin-right: -160px;
+  width: 587px;
+  height: 749px;
+  background-image: url(../images/2/mobile.png);
+  position: relative;
+}
+.slide-2 .pic {
+  width: 233px;
+  height: 132px;
+  margin-left: 50px;
+  margin-top: 250px;
+  /*background-image: url(../images/2/pic.gif);*/
+}
+/* Slide - 3
+  ------------------------- */
+
+.slide-3 .content-wrap {
+  margin-top: -335px;
+}
+.slide-3 .text {
+  float: right;
+  margin-top: 300px;
+  margin-right: 95px;
+  width: 403px;
+  height: 137px;
+  background-image: url(../images/3/text.png);
+}
+.slide-3 .mobile {
+  float: left;
+  margin-left: -160px;
+  width: 586px;
+  height: 749px;
+  background-image: url(../images/3/mobile.png);
+  position: relative;
+}
+.slide-3 .pic {
+  width: 276px;
+  height: 466px;
+  margin-left: 286px;
+  margin-top: 108px;
+  /*background-image: url(../images/3/pic.gif);*/
+}
+/* Slide - 4
+  ------------------------- */
+
+.slide-4 .content-wrap {
+  margin-top: -335px;
+}
+.slide-4 .text {
+  float: left;
+  margin-top: 300px;
+  margin-left: 95px;
+  width: 371px;
+  height: 140px;
+  background-image: url(../images/4/text.png);
+}
+.slide-4 .mobile {
+  float: right;
+  margin-right: -160px;
+  width: 587px;
+  height: 749px;
+  background-image: url(../images/4/mobile.png);
+  position: relative;
+}
+.slide-4 .pic {
+  width: 276px;
+  height: 466px;
+  margin-left: 29px;
+  margin-top: 108px;
+  /*background-image: url(../images/4/pic.gif);*/
+}
+/* Slide - 5
+  ------------------------- */
+
+.slide-5 .content-wrap {
+  margin-top: -335px;
+}
+.slide-5 .text {
+  float: right;
+  margin-top: 300px;
+  margin-right: 95px;
+  width: 341px;
+  height: 137px;
+  background-image: url(../images/5/text.png);
+}
+.slide-5 .mobile {
+  float: left;
+  margin-left: -160px;
+  width: 586px;
+  height: 749px;
+  background-image: url(../images/5/mobile.png);
+  position: relative;
+}
+.slide-5 .pic {
+  width: 276px;
+  height: 466px;
+  margin-left: 286px;
+  margin-top: 108px;
+  /*background-image: url(../images/5/pic.gif);*/
+}
+/* Slide - 6
+  ------------------------- */
+
+.slide-6 .content-wrap {
+  margin-top: -245px;
+  text-align: center;
+}
+/* module: 二维码 */
+
+.slide-6 .qrcode {
+  background: url(../images/6/qrcode.png);
+  width: 242px;
+  height: 242px;
+  margin: 0 auto 54px auto;
+}
+/* module: 文字图片 */
+
+.slide-6 .text {
+  background: url(../images/6/text.png);
+  width: 348px;
+  height: 47px;
+  margin: 0 auto 66px;
+}
+/* module: 按钮 */
+
+.slide-6 .download, .slide-6 .introduce {
+  display: inline-block;
+  margin: 0 29px;
+  width: 206px;
+  height: 76px;
+}
+.slide-6 .download {
+  background: url(../images/6/download.png);
+}
+.slide-6 .introduce {
+  background: url(../images/6/introduce.png);
+}

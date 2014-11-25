@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="utf-8" />
+  <title>兴才通</title>
+  <link rel="stylesheet" href="static/default/css/index.css" />
+</head>
+
+<body>
+  <div id="paginator"></div>
+  <div id="container">
+
+    <!-- slide 1 begin -->
+    <div class="slide slide-1">
+      <div class="slide-wrap">
+        <div class="content-wrap">
+          <div class="logo">兴才通</div>
+          <div class="pic-wrap">
+            <div class="pic-1"></div>
+            <div class="pic-2"></div>
+            <div class="pic-3"></div>
+            <div class="pic-4"></div>
+            <div class="pic-5"></div>
+            <div class="pic-6"></div>
+            <div class="pic-7"></div>
+            <div class="pic-8"></div>
+          </div>
+          <div class="text"></div>
+          <a class="download" href="download.html"></a>
+        </div>
+      </div>
+    </div>
+    <!-- // slide 1 end -->
+
+    <!-- slide 2 begin -->
+    <div class="slide slide-2">
+      <div class="slide-wrap">
+        <div class="content-wrap">
+          <div class="text"></div>
+          <div class="mobile">
+            <div class="pic"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- // slide 2 end -->
+
+    <!-- slide 3 begin -->
+    <div class="slide slide-3">
+      <div class="slide-wrap">
+        <div class="content-wrap">
+          <div class="text"></div>
+          <div class="mobile">
+            <div class="pic"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- // slide 3 end -->
+
+    <!-- slide 4 begin -->
+    <div class="slide slide-4">
+      <div class="slide-wrap">
+        <div class="content-wrap">
+          <div class="text"></div>
+          <div class="mobile">
+            <div class="pic"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- // slide 4 end -->
+
+    <!-- slide 5 begin -->
+    <div class="slide slide-5">
+      <div class="slide-wrap">
+        <div class="content-wrap">
+          <div class="text"></div>
+          <div class="mobile">
+            <div class="pic"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- // slide 5 end -->
+
+    <!-- slide 6 begin -->
+    <div class="slide slide-6">
+      <div class="slide-wrap">
+        <div class="content-wrap">
+          <div class="qrcode"></div>
+          <div class="text"></div>
+          <a class="download" href="download.html"></a>
+          <a class="introduce" href="###"></a>
+        </div>
+      </div>
+    </div>
+    <!-- // slide 6 end -->
+
+  </div>
+  <script src="static/js/jquery.js"></script>
+  <script src="static/js/slider.js"></script>
+  <script>
+    new Slider({
+      paginator: '#paginator',
+      activeClass: 'active',
+      container: '#container',
+      slides: '.slide',
+      slideWrap: '.slide-wrap',
+      speed: 1000
+    }).on('animate', function() {
+      if (this.index > 0) {
+        var self = this,
+          pic = this.slides.eq(this.index).find('.pic');
+
+        pic.css('background-image', 'none');
+
+        setTimeout(function() {
+          pic.css('background-image', 'url(static/default/images/' + (self.index + 1) + '/pic.gif)');
+        }, 10);
+      }
+    });
+  </script>
+</body>
+
+</html>
