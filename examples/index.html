@@ -3,8 +3,8 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>兴才通</title>
-  <link rel="stylesheet" href="static/default/css/index.css" />
+  <title>Demo</title>
+  <link rel="stylesheet" href="css/index.css" />
 </head>
 
 <body>
@@ -99,9 +99,18 @@
     <!-- // slide 6 end -->
 
   </div>
-  <script src="static/js/jquery.js"></script>
-  <script src="static/js/slider.js"></script>
+
+  <script src="../spm_modules/seajs/2.3.0/dist/sea.js"></script>
   <script>
+  seajs.config({
+    base: '/spm_modules',
+    alias: {
+      jquery: 'jquery/1.11.1/jquery'
+    }
+  });
+  seajs.use('../index', function(Slider) {
+    'use strict';
+
     new Slider({
       paginator: '#paginator',
       activeClass: 'active',
@@ -117,10 +126,11 @@
         pic.css('background-image', 'none');
 
         setTimeout(function() {
-          pic.css('background-image', 'url(static/default/images/' + (self.index + 1) + '/pic.gif)');
+          pic.css('background-image', 'url(images/' + (self.index + 1) + '/pic.gif)');
         }, 10);
       }
     });
+  });
   </script>
 </body>
 
