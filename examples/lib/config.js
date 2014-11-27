@@ -7,14 +7,12 @@
   }
 
   seajs.config({
-    base: '/examples',
+    base: '/',
     alias: {
-      'expect.js': '../spm_modules/expect.js/0.3.1/index.js',
-      '$': 'static/lib/jquery/jquery'
+      'expect.js': 'slider/spm_modules/expect.js/0.3.1/index.js',
+      'jquery': 'slider/spm_modules/jquery/1.11.1/jquery.js'
     },
-    map: [
-      ['static/lib/jquery/jquery', 'lib/jquery/jquery']
-    ]
+    map: []
   });
 
 })(this, this.seajs);

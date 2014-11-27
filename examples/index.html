@@ -100,14 +100,9 @@
 
   </div>
 
-  <script src="../spm_modules/seajs/2.3.0/dist/sea.js"></script>
+  <script src="lib/seajs/sea.js"></script>
+  <script src="lib/config.js"></script>
   <script>
-  seajs.config({
-    base: '/spm_modules',
-    alias: {
-      jquery: 'jquery/1.11.1/jquery'
-    }
-  });
   seajs.use('../index', function(Slider) {
     'use strict';
 

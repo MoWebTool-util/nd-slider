@@ -7,10 +7,9 @@
   }
 
   seajs.config({
-    base: '/examples',
+    base: '/',
     alias: {
       @ALIAS
-      '$': 'lib/jquery/jquery'
     },
     map: []
   });

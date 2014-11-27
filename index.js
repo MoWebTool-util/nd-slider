@@ -13,7 +13,7 @@ var KEY_DOWN = 40;
 var KEY_LEFT = 37;
 var KEY_RIGHT = 39;
 
-var Slider = module.exports = function(options) {
+var Slider = function(options) {
   return this.init(options);
 };
 
@@ -190,3 +190,5 @@ Slider.prototype.initPaginator = function() {
 
   self.paginator.html(html.join(''));
 };
+
+module.exports = Slider;
