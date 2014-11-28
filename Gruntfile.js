@@ -10,6 +10,12 @@ module.exports = function(grunt) {
 
     var alias = [];
 
+    if (prefix) {
+      prefix += '/';
+    } else {
+      prefix = '';
+    }
+
     fs.readdirSync(root).forEach(function(dest) {
       var version = fs.readdirSync(path.join(root, dest))[0];
       var spmmain = fs.readFileSync(path.join(root, dest, version, 'package.json'));
@@ -17,7 +23,7 @@ module.exports = function(grunt) {
       // 移除多余的 `./`
       spmmain = JSON.parse(spmmain).spm.main.replace(/^\.\//, '');
 
-      alias.push('\'' + dest + '\': \'' + prefix + '/' + root + '/' + dest + '/' + version + '/' + spmmain + '\'');
+      alias.push('\'' + dest + '\': \'' + prefix + root + '/' + dest + '/' + version + '/' + spmmain + '\'');
     });
 
     return alias.join(',\n      ');
@@ -32,45 +38,12 @@ module.exports = function(grunt) {
 
     pkg: pkg,
 
-    'cmd-wrap': {
-      proxy: {
-        dest: '.',
-        port: 8080,
-        rule: /^index\.js$/
-      }
-    },
-
-    connect: {
+    wrap: {
       server: {
-        options: {
-          // protocol: 'http',
-          port: 8080,
-          hostname: '127.0.0.1',
-          // base: '.',
-          // directory: null,
-          keepalive: true,
-          debug: true,
-          livereload: false,
-          // open: true,
-          useAvailablePort: true,
-          middleware:  function (connect, options, middlewares) {
-            // inject a custom middleware into the array of default middlewares
-            middlewares.unshift(function(req, res, next) {
-              if (req.url !== '/index.js' &&
-                  req.url !== '/spm_modules/jquery/1.11.1/jquery.js') {
-                return next();
-              }
-
-              var fs = require('fs');
-              var path = require('path');
-              var body = fs.readFileSync(path.join(process.cwd(), req.url));
-
-              res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-              res.end('define(function(require, exports, module) {' + body + '});');
-            });
-
-            return middlewares;
-          }
+        base: '.',
+        port: 8080,
+        wrap: function(url) {
+          return /^\/(((app|mod|spm_modules).+)|index)\.js$/.test(url);
         }
       }
     },
@@ -86,9 +59,7 @@ module.exports = function(grunt) {
       config: {
         options: {
           process: function(content /*, srcpath*/ ) {
-            return content.replace(/@APPNAME/g, pkg.name)
-              .replace(/@VERSION/g, pkg.version)
-              .replace(/@ALIAS/g, parseAlias(pkg.name));
+            return content.replace(/@ALIAS/g, parseAlias());
           }
         },
         files: [{
@@ -110,11 +81,10 @@ module.exports = function(grunt) {
 
   grunt.registerTask('test', ['jshint','exec:spm-test']);
 
-  grunt.registerTask('develop', ['connect']);
-
   grunt.registerTask('publish', ['test', 'exec:spm-publish']);
 
-  grunt.registerTask('proxy', ['cmd-wrap']);
-  grunt.registerTask('default', ['develop']);
+  grunt.registerTask('server', ['copy', 'wrap']);
+
+  grunt.registerTask('default', ['server']);
 
 };
