@@ -1,5 +1,5 @@
 {
-  "name": "slider",
+  "name": "nd-slider",
   "version": "0.0.1",
   "description": "viewport slider",
   "keywords": [],
@@ -7,10 +7,10 @@
   "author": "crossjs <liwenfu@crossjs.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/crossjs/slider.git"
+    "url": "https://github.com/ndfront/nd-slider.git"
   },
   "bugs": {
-    "url": "https://github.com/crossjs/slider/issues"
+    "url": "https://github.com/ndfront/nd-slider/issues"
   },
   "licenses": "MIT",
   "devDependencies": {

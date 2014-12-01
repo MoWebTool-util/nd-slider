@@ -87,17 +87,18 @@ Slider.prototype.scroll = function(step, speed) {
     return;
   }
 
-  this.index += step;
+  var toIndex = this.index = step;
 
-  if (this.index < 0) {
-    this.index = 0;
+  if (toIndex < 0) {
     return;
   }
 
-  if (this.index > this.maxIndex) {
-    this.index = this.maxIndex;
+  if (toIndex > this.maxIndex) {
     return;
   }
+
+  this.prevIndex = this.index;
+  this.index = toIndex;
 
   this.animate(speed);
 };
