@@ -87,7 +87,7 @@ Slider.prototype.scroll = function(step, speed) {
     return;
   }
 
-  var toIndex = this.index = step;
+  var toIndex = this.index + step;
 
   if (toIndex < 0) {
     return;
@@ -129,27 +129,33 @@ Slider.prototype.paginate = function() {
 
 Slider.prototype.initEvent = function() {
   var self = this,
-    timeout;
+    resizeTimeout;
 
   function resize() {
-    self.height = $(window).height();
-    self.scroll(0, 500);
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout);
+    }
+
+    resizeTimeout = setTimeout(function() {
+      self.height = $(window).height();
+      self.scroll(0, 500);
+    }, 50);
   }
 
   $(window).on('resize', function() {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-
-    timeout = setTimeout(resize, 500);
+    resize();
   });
 
   $(document).on({
     // for firefox
     DOMMouseScroll: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       self.scroll(e.originalEvent.detail > 0 ? 1 : -1);
     },
     mousewheel: function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       self.scroll(e.originalEvent.wheelDelta < 0 ? 1 : -1);
     },
     keydown: function(e) {
@@ -179,7 +185,8 @@ Slider.prototype.initPaginator = function() {
   self.paginator = $(self.paginator).on('click', function(e) {
     if (e.target.tagName === 'I') {
       self.ready = true;
-      self.scroll(e.target.getAttribute('data-index') - self.index);
+      console.log(e.target.getAttribute('data-index'));
+      self.scroll(+e.target.getAttribute('data-index') - self.index);
     }
   });
 
