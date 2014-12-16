@@ -185,7 +185,6 @@ Slider.prototype.initPaginator = function() {
   self.paginator = $(self.paginator).on('click', function(e) {
     if (e.target.tagName === 'I') {
       self.ready = true;
-      console.log(e.target.getAttribute('data-index'));
       self.scroll(+e.target.getAttribute('data-index') - self.index);
     }
   });
