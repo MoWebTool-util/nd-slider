@@ -2,6 +2,12 @@
 
 ---
 
+## 0.0.3
+
+- rebuild.
+- add comments.
+- add event `complete`.
+
 ## 0.0.2
 
 - bugs fixed.
