@@ -6,11 +6,14 @@
 'use strict';
 
 var $ = require('jquery');
+var Browser = require('nd-browser');
 
 var KEY_LEFT  = 37;
 var KEY_UP    = 38;
 var KEY_RIGHT = 39;
 var KEY_DOWN  = 40;
+
+var NS_EVENT  = '.nd-slider';
 
 /**
  * 全屏切换
@@ -29,15 +32,19 @@ var Slider = function(options) {
  */
 Slider.prototype.init = function(options) {
   this.activeClass = options.activeClass;
-  this.container = $(options.container);
   this.events = options.events;
   this.paginator = options.paginator;
-  this.slides = $(options.slides, this.container);
   this.slideWrap = options.slideWrap;
   this.speed = options.speed || 1000;
+  this.align = options.align || 'right';
+  this.axis = options.axis || 'both';
+  this.threshold = options.threshold || 50;
+  this.container = $(options.container).addClass('axis-' + this.axis);
+  this.slides = $(options.slides, this.container);
 
   this.index = 0;
   this.maxIndex = this.slides.length - 1;
+  this.width = $(window).width();
   this.height = $(window).height();
 
   this._initDomEvents();
@@ -48,9 +55,27 @@ Slider.prototype.init = function(options) {
   this.ready = true;
 
   // 初始化到第一屏
-  this._scroll(0, 1);
+  this.scroll(0, 1);
 
   return this;
+};
+
+/**
+ * 初始化事件订阅
+ * @private
+ */
+Slider.prototype._initEvents = function() {
+  if (!this.events) {
+    return;
+  }
+
+  var p;
+
+  for (p in this.events) {
+    this.on(p, this.events[p]);
+  }
+
+  this.events = null;
 };
 
 /**
@@ -58,49 +83,121 @@ Slider.prototype.init = function(options) {
  * @private
  */
 Slider.prototype._initDomEvents = function() {
-  var self = this,
-    resizeTimeout;
+  var self = this;
 
-  function resize() {
+  /**
+   * window
+   */
+  var resizeTimeout,
+    win = $(window);
+
+  win.on('resize' + NS_EVENT, function() {
     if (resizeTimeout) {
       clearTimeout(resizeTimeout);
     }
 
     resizeTimeout = setTimeout(function() {
-      self.height = $(window).height();
-      self._scroll(0, 1);
+      self.width = win.width();
+      self.height = win.height();
+      self.scroll(0, 1);
     }, 50);
+  });
+
+  /**
+   * document
+   */
+
+  var startX,
+      startY,
+      axis = self.axis,
+      threshold = self.threshold,
+      doc = $(document);
+
+  function touchstart(e) {
+    var touches = e.originalEvent.touches;
+
+    if (touches && touches.length) {
+      startX = touches[0].pageX;
+      startY = touches[0].pageY;
+      doc.on('touchmove' + NS_EVENT, touchmove);
+      doc.on('touchend' + NS_EVENT, touchend);
+    }
+
+    e.preventDefault();
   }
 
-  $(window).on('resize.nd-slider', function() {
-    resize();
-  });
+  function touchmove(e) {
+    var touches = e.originalEvent.touches;
 
-  $(document).on({
-    // for firefox
-    'DOMMouseScroll.nd-slider': function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      self._scroll(e.originalEvent.detail > 0 ? 1 : -1);
-    },
-    'mousewheel.nd-slider': function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      self._scroll(e.originalEvent.wheelDelta < 0 ? 1 : -1);
-    },
-    'keydown.nd-slider': function(e) {
-      switch (e.keyCode) {
-        case KEY_UP:
-        case KEY_LEFT:
-          self._scroll(-1);
-          break;
-        case KEY_DOWN:
-        case KEY_RIGHT:
-          self._scroll(1);
-          break;
+    if (touches && touches.length) {
+      var deltaX = startX - touches[0].pageX;
+      var deltaY = startY - touches[0].pageY;
+      var direction;
+
+      if (axis !== 'y' && Math.abs(deltaX) >= threshold) {
+        direction = deltaX >= threshold ? 1 : -1;
+      }
+
+      if (!direction && axis !== 'x' && Math.abs(deltaY) >= threshold) {
+        direction = deltaY >= threshold ? 1 : -1;
+      }
+
+      if (direction) {
+        doc.off('touchmove' + NS_EVENT, touchmove);
+        doc.off('touchend' + NS_EVENT, touchend);
+
+        self.scroll(direction);
       }
     }
-  });
+
+    e.preventDefault();
+  }
+
+  function touchend(e) {
+    doc.off('touchmove' + NS_EVENT, touchmove);
+    e.preventDefault();
+  }
+
+  var events = {};
+
+  if (Browser.mobile) {
+    events['touchstart' + NS_EVENT] = touchstart;
+  } else {
+    if (axis !== 'x') {
+      if (Browser.browser === 'Firefox') {
+        events['DOMMouseScroll' + NS_EVENT] = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          self.scroll(e.originalEvent.detail > 0 ? 1 : -1);
+        };
+      }
+
+      events['mousewheel' + NS_EVENT] = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        self.scroll(e.originalEvent.wheelDelta < 0 ? 1 : -1);
+      };
+    }
+
+    events['keydown' + NS_EVENT] = function(e) {
+      switch (e.keyCode) {
+        case KEY_UP:
+          axis !== 'x' && self.scroll(-1);
+          break;
+        case KEY_LEFT:
+          axis !== 'y' && self.scroll(-1);
+          break;
+        case KEY_DOWN:
+          axis !== 'x' && self.scroll(1);
+          break;
+        case KEY_RIGHT:
+          axis !== 'y' && self.scroll(1);
+          break;
+      }
+    };
+  }
+
+  doc.on(events);
 };
 
 /**
@@ -114,10 +211,12 @@ Slider.prototype._initPaginator = function() {
     return;
   }
 
-  self.paginator = $(self.paginator).on('click.nd-slider', function(e) {
+  self.paginator = $(self.paginator)
+  .addClass(this.align)
+  .on('click' + NS_EVENT, function(e) {
     if (e.target.tagName === 'I') {
       self.ready = true;
-      self._scroll(+e.target.getAttribute('data-index') - self.index);
+      self.scroll(+e.target.getAttribute('data-index') - self.index);
     }
   });
 
@@ -132,13 +231,12 @@ Slider.prototype._initPaginator = function() {
 
 /**
  * 滚屏
- * @private
  * @param  {Number} step  移动的页数，负数为向前页移动
  * @param  {Number} speed 动画速度
  * @fires module:nd-slider#animate
  * @fires module:nd-slider#complete
  */
-Slider.prototype._scroll = function(step, speed) {
+Slider.prototype.scroll = function(step, speed) {
   var self = this;
 
   if (!self.ready) {
@@ -184,7 +282,9 @@ Slider.prototype._scroll = function(step, speed) {
  * @param  {Function} callback 动画回调函数
  */
 Slider.prototype.animate = function(speed, callback) {
-  this.container.stop(true).animate({
+  this.container.stop(true).animate(this.axis === 'x' ? {
+    left: '-' + (this.index * this.width) + 'px'
+  } : {
     top: '-' + (this.index * this.height) + 'px'
   }, speed, callback);
 };
@@ -199,24 +299,6 @@ Slider.prototype.paginate = function() {
 
   this.paginator.children().eq(this.index).addClass(this.activeClass)
       .siblings('.' + this.activeClass).removeClass(this.activeClass);
-};
-
-/**
- * 初始化事件订阅
- * @private
- */
-Slider.prototype._initEvents = function() {
-  if (!this.events) {
-    return;
-  }
-
-  var p;
-
-  for (p in this.events) {
-    this.on(p, this.events[p]);
-  }
-
-  this.events = null;
 };
 
 /**
